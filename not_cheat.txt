@@ -1,0 +1,56 @@
+
+import time 
+
+def initialize_can_message(can_msg, can_id, can_length, can_data, data_base):
+    can_msg.can_header.message_id = can_id
+    can_msg.can_header.length = can_length
+    can_msg.payload = can_data
+    can_msg.data_base = data_base
+
+ID = 0x04
+LENGTH = 0x04
+DATA = Array[Byte]((0x01, 0x02, 0x0D, 0x0A))
+
+
+can_msg = message_builder.create_can_message(hari.name, hari.name)
+print("Initialize CAN message...")
+initialize_can_message(can_msg, ID, LENGTH, DATA, None)
+
+print("Sending CAN message... ")     
+can_msg.send()
+
+---------------------------------------------------------------------
+
+
+response
+
+
+def initialize_can_message(can_msg, can_id, can_length, can_data, data_base):
+    can_msg.can_header.message_id = can_id
+    can_msg.can_header.length = can_length
+    can_msg.payload = can_data
+    can_msg.data_base = data_base
+
+
+def tc_prepare_capture(msg, call_back_function):
+    msg.on_message_received += call_back_function
+    msg.start_capture()
+    return
+
+def on_msg_received(msg):
+    print("CAN message received... ")
+    #print(msg)
+    if msg.can_header.message_id == 0x04:
+        ID = 0x03
+        LENGTH = 0x04
+        DATA = Array[Byte]((0x04, 0x05, 0x06, 0x07))
+        can_msg = message_builder.create_can_message(nilay.name, nilay.name)
+        print("Initialize response CAN message...")
+        initialize_can_message(can_msg, ID, LENGTH, DATA, None)
+        can_msg.send()
+        
+
+can_msg = message_builder.create_can_message(nilay.name, nilay.name)
+tc_prepare_capture(can_msg, on_msg_received)
+print("Verify CAN message... ")
+tc_wait_for_return(10000)
